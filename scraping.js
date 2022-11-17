@@ -4,7 +4,7 @@ const fs = require('fs');
 module.exports = async () => {
 
   const pages = [];//All ad pages.
-  let pageNum = 929;
+  let pageNum = 1;
   //pageObject will be formatted as {title,phone,images}, becuase these are the names we chose for the scraping operations below.
   //Note that each key is an array, because there might be multiple elements fitting the querySelector.
   //This hook is called after every page finished scraping.
