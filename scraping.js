@@ -10,6 +10,7 @@ module.exports = async () => {
   //This hook is called after every page finished scraping.
   //It will also get an address argument. 
   const getPageObject = (pageObject, address) => {
+    pageObject.pageNum = pageNum
     pages.push(pageObject)
   }
 
