@@ -4,7 +4,7 @@ const fs = require('fs');
 module.exports = async () => {
 
   const pages = [];//All ad pages.
-  let pageNum = 1;
+  let pageNum = 930;
   //pageObject will be formatted as {title,phone,images}, becuase these are the names we chose for the scraping operations below.
   //Note that each key is an array, because there might be multiple elements fitting the querySelector.
   //This hook is called after every page finished scraping.
@@ -32,7 +32,7 @@ module.exports = async () => {
 
   const scraper = new Scraper(config);
   // while (true) {
-  const root = new Root({ pagination: { queryString: 'pagepc0', begin: 929, end: 929 } });//Open pages 1-10. You need to supply the querystring that the site uses(more details in the API docs).
+  const root = new Root({ pagination: { queryString: 'pagepc0', begin: pageNum, end: pageNum } });//Open pages 1-10. You need to supply the querystring that the site uses(more details in the API docs).
   const pageManager = new CollectContent('nav.title-bar ul.pagination li', { name: 'hasNext' })
   const jobAds = new OpenLinks('article .car-description .car-caption .car-title div a', { name: 'list', getPageObject });//Opens every job ad, and calls the getPageObject, passing the formatted dictionary.
 
@@ -57,7 +57,7 @@ module.exports = async () => {
 
   const getPageManager = pageManager.getData()
   console.log('==============================', getPageManager)
-  //   pageNum++;
+  pageNum++;
   //   if (pageNum > 1)
   //     break;
   // }
