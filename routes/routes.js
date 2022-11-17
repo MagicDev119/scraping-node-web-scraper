@@ -53,7 +53,7 @@ router.get('/getVehicleList', (req, res) => {
       }
     })
 
-    res.send(JSON.parse(dataList));
+    res.send(dataList);
   });
 })
 
