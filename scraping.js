@@ -4,7 +4,7 @@ const fs = require('fs');
 module.exports = async () => {
 
   const pages = [];//All ad pages.
-  let pageNum = 929;
+  let pageNum = 931;
   //pageObject will be formatted as {title,phone,images}, becuase these are the names we chose for the scraping operations below.
   //Note that each key is an array, because there might be multiple elements fitting the querySelector.
   //This hook is called after every page finished scraping.
@@ -43,7 +43,7 @@ module.exports = async () => {
     const carPrice = new CollectContent('.car-detail-header .car-detail-header__price-block div .car-detail-price__price', { name: 'carPrice' });
     const title = new CollectContent('.car-detail-header div h1 a', { name: 'title' });
     const carId = new CollectContent('.car-detail-header div h1', { contentType: 'html', name: 'carId' });
-    // const images = new DownloadContent('#carousel-slides .carousel-inner .item picture', { name: 'images', alternativeSrc: ['data-url'], filePath: './images/' + pageNum + '/' })
+    const images = new DownloadContent('#carousel-slides .carousel-inner .item picture', { name: 'images', alternativeSrc: ['data-url'], filePath: './images/' + pageNum + '/' })
     root.addOperation(pageManager);
     root.addOperation(jobAds);
     jobAds.addOperation(title);
@@ -52,7 +52,7 @@ module.exports = async () => {
     jobAds.addOperation(technicalInfo);
     jobAds.addOperation(carPriceTitle);
     jobAds.addOperation(carPrice);
-    // jobAds.addOperation(images);
+    jobAds.addOperation(images);
 
     await scraper.scrape(root);
 
