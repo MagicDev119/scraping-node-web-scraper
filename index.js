@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const scraping = require('./scraping')
+const path = require('path')
 const routes = require('./routes/routes')
 var cron = require('node-cron');
 app.use(express.json())
