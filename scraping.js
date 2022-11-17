@@ -32,7 +32,7 @@ module.exports = async () => {
 
   const scraper = new Scraper(config);
   // while (true) {
-  const root = new Root({ pagination: { queryString: 'pagepc0', begin: 1, end: 1 } });//Open pages 1-10. You need to supply the querystring that the site uses(more details in the API docs).
+  const root = new Root({ pagination: { queryString: 'pagepc0', begin: 929, end: 929 } });//Open pages 1-10. You need to supply the querystring that the site uses(more details in the API docs).
   const pageManager = new CollectContent('nav.title-bar ul.pagination li:last-child', { name: 'hasNext' })
   const jobAds = new OpenLinks('article .car-description .car-caption .car-title div a', { name: 'list', getPageObject });//Opens every job ad, and calls the getPageObject, passing the formatted dictionary.
 
