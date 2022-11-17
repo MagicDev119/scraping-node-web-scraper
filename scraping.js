@@ -58,7 +58,7 @@ module.exports = async () => {
     const getPageManager = pageManager.getData()
     console.log('==============================', getPageManager)
     pageNum++;
-    if (getPageManager[getPageManager.length - 1] === 'Next')
+    if (getPageManager[getPageManager.length - 1] !== 'Next')
       break;
   }
 
