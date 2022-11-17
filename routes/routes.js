@@ -54,7 +54,7 @@ router.get('/getVehicleList', (req, res) => {
       }
     })
 
-    res.send(dataList);
+    res.send(data);
   });
 })
 
