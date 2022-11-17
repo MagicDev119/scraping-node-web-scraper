@@ -39,7 +39,7 @@ module.exports = async () => {
     const technicalHeaders = new CollectContent('.car-detail-info .technical-params .technical-headers', { name: 'technicalHeaders' });
     const technicalInfo = new CollectContent('.car-detail-info .technical-params .technical-info', { name: 'technicalInfo' });
     const carPriceTitle = new CollectContent('.car-detail-info .technical-params .car-price-box div:first-child', { name: 'carPriceTitle' });
-    const carPrice = new CollectContent('.car-detail-info .technical-params .car-price-box div:last-child', { name: 'carPrice' });
+    const carPrice = new CollectContent('.car-detail-header .car-detail-header__price-block div .car-detail-price__price', { name: 'carPrice' });
     const title = new CollectContent('.car-detail-header div h1 a', { name: 'title' });
     const carId = new CollectContent('.car-detail-header div h1', { contentType: 'html', name: 'carId' });
     // const images = new DownloadContent('#carousel-slides .carousel-inner .item picture', { name: 'images', alternativeSrc: ['data-url'], filePath: './images/' + pageNum + '/' })
