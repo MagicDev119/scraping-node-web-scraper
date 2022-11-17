@@ -47,7 +47,8 @@ router.get('/getVehicleList', (req, res) => {
           post_content: content,
           post_title: each.title[0],
           post_status: 'publish',
-          post_type: 'vehica_car'
+          post_type: 'vehica_car',
+          images: each.images
         },
         post_meta: post_meta
       }
