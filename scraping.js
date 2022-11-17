@@ -4,13 +4,20 @@ const fs = require('fs');
 module.exports = async () => {
 
   const pages = [];//All ad pages.
-
+  let pageNum = 1;
   //pageObject will be formatted as {title,phone,images}, becuase these are the names we chose for the scraping operations below.
   //Note that each key is an array, because there might be multiple elements fitting the querySelector.
   //This hook is called after every page finished scraping.
   //It will also get an address argument. 
   const getPageObject = (pageObject, address) => {
     pages.push(pageObject)
+  }
+
+  const getElementContent = (content, pageAddress) => {
+    var contentElement = content.match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-')
+    myDivs.push({
+      carId: contentElement[contentElement.length - 1]
+    })
   }
 
   const config = {
@@ -21,20 +28,35 @@ module.exports = async () => {
   }
 
   const scraper = new Scraper(config);
+  while (true) {
+    const root = new Root({ pagination: { queryString: 'pagepc0', begin: pageNum, end: pageNum } });//Open pages 1-10. You need to supply the querystring that the site uses(more details in the API docs).
+    const pageManager = new CollectContent('', { name: 'hasNext' })
+    const jobAds = new OpenLinks('article .car-description .car-caption .car-title div a', { name: 'list', getPageObject });//Opens every job ad, and calls the getPageObject, passing the formatted dictionary.
 
-  const root = new Root();//Open pages 1-10. You need to supply the querystring that the site uses(more details in the API docs).
+    const technicalHeaders = new CollectContent('.car-detail-info .technical-params .technical-headers', { name: 'technicalHeaders' });
+    const technicalInfo = new CollectContent('.car-detail-info .technical-params .technical-info', { name: 'technicalInfo' });
+    const carPriceTitle = new CollectContent('.car-detail-info .technical-params .car-price-box div:first-child', { name: 'carPriceTitle' });
+    const carPrice = new CollectContent('.car-detail-info .technical-params .car-price-box div:last-child', { name: 'carPrice' });
+    const title = new CollectContent('.car-detail-header div h1 a', { name: 'title' });
+    const carId = new CollectContent('.car-detail-header div h1', { getElementContent });
+    // const images = new DownloadContent('#carousel-slides .carousel-inner .item picture', { name: 'images', alternativeSrc: ['data-url'], filePath: './images/' + pageNum + '/' })
+    root.addOperation(pageManager);
+    root.addOperation(jobAds);
+    jobAds.addOperation(title);
+    jobAds.addOperation(carId);
+    jobAds.addOperation(technicalHeaders);
+    jobAds.addOperation(technicalInfo);
+    jobAds.addOperation(carPriceTitle);
+    jobAds.addOperation(carPrice);
 
-  const jobAds = new OpenLinks('.list-row h2 a', { name: 'Ad page', getPageObject });//Opens every job ad, and calls the getPageObject, passing the formatted dictionary.
+    await scraper.scrape(root);
 
-  const phones = new CollectContent('.details-desc a.tel', { name: 'phone' })//Important to choose a name, for the getPageObject to produce the expected results.
-
-  const titles = new CollectContent('h1', { name: 'title' });
-
-  root.addOperation(jobAds);
-  jobAds.addOperation(titles);
-  jobAds.addOperation(phones);
-
-  await scraper.scrape(root);
+    const getPageManager = pageManager.getData()
+    var_dump(getPageManager)
+    pageNum++;
+    if (pageNum > 1)
+      break;
+  }
 
   fs.writeFile('./pages/pages.json', JSON.stringify(pages), () => { });
 }
