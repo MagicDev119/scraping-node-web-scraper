@@ -48,13 +48,14 @@ router.get('/getVehicleList', (req, res) => {
           post_title: each.title[0],
           post_status: 'publish',
           post_type: 'vehica_car',
-          images: each.images
+          images: each.images,
+          page_num: each.pageNum
         },
         post_meta: post_meta
       }
     })
 
-    res.send(data);
+    res.send(dataList);
   });
 })
 
