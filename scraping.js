@@ -14,6 +14,9 @@ module.exports = async () => {
   }
 
   const getElementContent = (content, pageAddress) => {
+    console.log('-----------------------------------contentElement')
+    console.log(content.match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i))
+    console.log('================================================')
     const contentElement = content.match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-')
     console.log(contentElement)
     myDivs.push({
