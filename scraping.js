@@ -53,7 +53,6 @@ module.exports = async () => {
     jobAds.addOperation(carPriceTitle);
     jobAds.addOperation(carPrice);
     // jobAds.addOperation(images);
-    jobAds.addOperation({ pageNum })
 
     await scraper.scrape(root);
 
