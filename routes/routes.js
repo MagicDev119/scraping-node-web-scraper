@@ -13,7 +13,7 @@ router.get('/getVehicleList', (req, res) => {
       let post_meta = [];
       let flag = false;
       content = '';
-
+      console.log(each.carPrice)
       if (each.carPrice.length >= 2) {
         post_meta.push({
           label: 'Price',
