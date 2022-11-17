@@ -34,10 +34,10 @@ module.exports = async () => {
   // const pageManager = new CollectContent('nav.title-bar ul.pagination li:last-child', { name: 'hasNext' })
   const jobAds = new OpenLinks('article .car-description .car-caption .car-title div a', { name: 'list', getPageObject });//Opens every job ad, and calls the getPageObject, passing the formatted dictionary.
 
-  // const technicalHeaders = new CollectContent('.car-detail-info .technical-params .technical-headers', { name: 'technicalHeaders' });
-  // const technicalInfo = new CollectContent('.car-detail-info .technical-params .technical-info', { name: 'technicalInfo' });
-  // const carPriceTitle = new CollectContent('.car-detail-info .technical-params .car-price-box div:first-child', { name: 'carPriceTitle' });
-  // const carPrice = new CollectContent('.car-detail-info .technical-params .car-price-box div:last-child', { name: 'carPrice' });
+  const technicalHeaders = new CollectContent('.car-detail-info .technical-params .technical-headers', { name: 'technicalHeaders' });
+  const technicalInfo = new CollectContent('.car-detail-info .technical-params .technical-info', { name: 'technicalInfo' });
+  const carPriceTitle = new CollectContent('.car-detail-info .technical-params .car-price-box div:first-child', { name: 'carPriceTitle' });
+  const carPrice = new CollectContent('.car-detail-info .technical-params .car-price-box div:last-child', { name: 'carPrice' });
   const title = new CollectContent('.car-detail-header div h1 a', { name: 'title' });
   // const carId = new CollectContent('.car-detail-header div h1', { getElementContent });
   // const images = new DownloadContent('#carousel-slides .carousel-inner .item picture', { name: 'images', alternativeSrc: ['data-url'], filePath: './images/' + pageNum + '/' })
@@ -45,10 +45,10 @@ module.exports = async () => {
   root.addOperation(jobAds);
   jobAds.addOperation(title);
   // jobAds.addOperation(carId);
-  // jobAds.addOperation(technicalHeaders);
-  // jobAds.addOperation(technicalInfo);
-  // jobAds.addOperation(carPriceTitle);
-  // jobAds.addOperation(carPrice);
+  jobAds.addOperation(technicalHeaders);
+  jobAds.addOperation(technicalInfo);
+  jobAds.addOperation(carPriceTitle);
+  jobAds.addOperation(carPrice);
 
   await scraper.scrape(root);
 
