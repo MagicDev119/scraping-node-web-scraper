@@ -55,7 +55,7 @@ module.exports = async () => {
 
   await scraper.scrape(root);
 
-  const getPageManager = jobAds.getData()
+  const getPageManager = pageManager.getData()
   console.log('==============================', getPageManager)
   //   pageNum++;
   //   if (pageNum > 1)
