@@ -14,10 +14,10 @@ router.get('/getVehicleList', (req, res) => {
       let flag = false;
       content = '';
       console.log(each.carPrice)
-      if (each.carPrice.length >= 2) {
+      if (each.carPrice.length >= 1) {
         post_meta.push({
           label: 'Price',
-          value: each.carPrice[1]
+          value: each.carPrice[0]
         })
       }
       each.technicalHeaders.forEach((eachTechParam, index) => {
@@ -53,7 +53,7 @@ router.get('/getVehicleList', (req, res) => {
       }
     })
 
-    res.send(data);
+    res.send(dataList);
   });
 })
 
