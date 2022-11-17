@@ -14,7 +14,8 @@ module.exports = async () => {
   }
 
   const getElementContent = (content, pageAddress) => {
-    var contentElement = content.match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-')
+    const contentElement = content.match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-')
+    console.log(contentElement)
     myDivs.push({
       carId: contentElement[contentElement.length - 1]
     })
@@ -31,7 +32,7 @@ module.exports = async () => {
   const scraper = new Scraper(config);
   // while (true) {
   const root = new Root({ pagination: { queryString: 'pagepc0', begin: 1, end: 1 } });//Open pages 1-10. You need to supply the querystring that the site uses(more details in the API docs).
-  // const pageManager = new CollectContent('nav.title-bar ul.pagination li:last-child', { name: 'hasNext' })
+  const pageManager = new CollectContent('nav.title-bar ul.pagination li:last-child', { name: 'hasNext' })
   const jobAds = new OpenLinks('article .car-description .car-caption .car-title div a', { name: 'list', getPageObject });//Opens every job ad, and calls the getPageObject, passing the formatted dictionary.
 
   const technicalHeaders = new CollectContent('.car-detail-info .technical-params .technical-headers', { name: 'technicalHeaders' });
@@ -39,12 +40,12 @@ module.exports = async () => {
   const carPriceTitle = new CollectContent('.car-detail-info .technical-params .car-price-box div:first-child', { name: 'carPriceTitle' });
   const carPrice = new CollectContent('.car-detail-info .technical-params .car-price-box div:last-child', { name: 'carPrice' });
   const title = new CollectContent('.car-detail-header div h1 a', { name: 'title' });
-  // const carId = new CollectContent('.car-detail-header div h1', { getElementContent });
+  const carId = new CollectContent('.car-detail-header div h1', { getElementContent });
   // const images = new DownloadContent('#carousel-slides .carousel-inner .item picture', { name: 'images', alternativeSrc: ['data-url'], filePath: './images/' + pageNum + '/' })
-  // root.addOperation(pageManager);
+  root.addOperation(pageManager);
   root.addOperation(jobAds);
   jobAds.addOperation(title);
-  // jobAds.addOperation(carId);
+  jobAds.addOperation(carId);
   jobAds.addOperation(technicalHeaders);
   jobAds.addOperation(technicalInfo);
   jobAds.addOperation(carPriceTitle);
