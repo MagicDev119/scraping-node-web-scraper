@@ -52,7 +52,7 @@ module.exports = async () => {
     await scraper.scrape(root);
 
     const getPageManager = pageManager.getData()
-    var_dump(getPageManager)
+    console.log('==============================', getPageManager)
     pageNum++;
     if (pageNum > 1)
       break;
