@@ -10,7 +10,10 @@ router.get('/getVehicleList', (req, res) => {
     }
 
     const dataList = JSON.parse(data).map(each => {
-      let post_meta = [];
+      let post_meta = [{
+        label: "Gallery",
+        value: []
+      }];
       let flag = false;
       content = '';
       console.log(each.carPrice)
