@@ -8,7 +8,7 @@ app.use(express.json())
 
 app.use('/api', routes)
 
-cron.schedule('0 0 0 * *', () => {
+cron.schedule('* * * * * *', () => {
   console.log('start-scraping')
   // scraping()
 });
