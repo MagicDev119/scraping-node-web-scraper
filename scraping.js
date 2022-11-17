@@ -62,5 +62,9 @@ module.exports = async () => {
       break;
   }
 
+  pages.map(each => {
+    const carIdMatch = each.carId[0].match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-')
+    each.carId = carIdMatch[carIdMatch.length - 1]
+  })
   fs.writeFile('./pages/pages.json', JSON.stringify(pages), () => { });
 }
