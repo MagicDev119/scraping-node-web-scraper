@@ -9,6 +9,50 @@ router.get('/getVehicleList', (req, res) => {
       throw err;
     }
 
+    const dataList = JSON.parse(data).map(each => {
+      let post_meta = [];
+      let flag = false;
+      content = '';
+
+      if (each.carPrice.length >= 2) {
+        post_meta.push({
+          label: 'Price',
+          value: each.carPrice[1]
+        })
+      }
+      each.technicalHeaders.forEach((eachTechParam, index) => {
+        if (eachTechParam === 'Seller') {
+          flag = true
+        }
+
+        if (!flag) {
+          post_meta.push({
+            label: eachTechParam,
+            value: each.technicalInfo[index]
+          })
+        } else {
+          if (eachTechParam === 'Description') {
+            content = each.technicalInfo[index]
+          }
+          if (eachTechParam === 'Contact') {
+            post_meta.push({
+              label: eachTechParam,
+              value: each.technicalInfo[index]
+            })
+          }
+        }
+      })
+      return {
+        post: {
+          post_content: content,
+          post_title: each.title[0],
+          post_status: 'publish',
+          post_type: 'vehica_car'
+        },
+        post_meta: post_meta
+      }
+    })
+
     res.send(JSON.parse(data));
   });
 })
