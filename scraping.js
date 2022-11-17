@@ -19,9 +19,7 @@ module.exports = async () => {
     console.log('================================================')
     const contentElement = content.match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-')
     console.log(contentElement)
-    myDivs.push({
-      carId: contentElement[contentElement.length - 1]
-    })
+    myDivs.push(contentElement[contentElement.length - 1])
   }
 
   const config = {
@@ -43,7 +41,7 @@ module.exports = async () => {
   const carPriceTitle = new CollectContent('.car-detail-info .technical-params .car-price-box div:first-child', { name: 'carPriceTitle' });
   const carPrice = new CollectContent('.car-detail-info .technical-params .car-price-box div:last-child', { name: 'carPrice' });
   const title = new CollectContent('.car-detail-header div h1 a', { name: 'title' });
-  const carId = new CollectContent('.car-detail-header div h1', { getElementContent });
+  const carId = new CollectContent('.car-detail-header div h1', { contentType: 'html', name: 'carId', getElementContent });
   // const images = new DownloadContent('#carousel-slides .carousel-inner .item picture', { name: 'images', alternativeSrc: ['data-url'], filePath: './images/' + pageNum + '/' })
   root.addOperation(pageManager);
   root.addOperation(jobAds);
