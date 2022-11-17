@@ -42,7 +42,7 @@ module.exports = async () => {
   const carPrice = new CollectContent('.car-detail-info .technical-params .car-price-box div:last-child', { name: 'carPrice' });
   const title = new CollectContent('.car-detail-header div h1 a', { name: 'title' });
   const carId = new CollectContent('.car-detail-header div h1', { contentType: 'html', name: 'carId' });
-  // const images = new DownloadContent('#carousel-slides .carousel-inner .item picture', { name: 'images', alternativeSrc: ['data-url'], filePath: './images/' + pageNum + '/' })
+  const images = new DownloadContent('#carousel-slides .carousel-inner .item picture', { name: 'images', alternativeSrc: ['data-url'], filePath: './images/' + pageNum + '/' })
   root.addOperation(pageManager);
   root.addOperation(jobAds);
   jobAds.addOperation(title);
@@ -51,6 +51,7 @@ module.exports = async () => {
   jobAds.addOperation(technicalInfo);
   jobAds.addOperation(carPriceTitle);
   jobAds.addOperation(carPrice);
+  jobAds.addOperation(images);
 
   await scraper.scrape(root);
 
