@@ -38,7 +38,7 @@ const saveToDatabase = (start, total) => {
 }
 
 const scrapingFunc = async () => {
-  axios.get('https://magicdev119.nidigital.uk/wp-json/secret/v1/scraping/', { httpsAgent: agent })
+  axios.get('http://magicdev119.nidigital.uk/wp-json/secret/v1/scraping/')
     .then(response => {
       console.log(response.data == 'success' ? '123' : 'asd')
     })
