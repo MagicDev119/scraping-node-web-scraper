@@ -38,11 +38,11 @@ const saveToDatabase = (start, total) => {
 }
 
 const scrapingFunc = async () => {
-  // axios.get('https://localhost/wp-json/secret/v1/scraping/', { httpsAgent: agent })
-  //   .then(response => {
-  //     console.log(response.data == 'success' ? '123' : 'asd')
-  //   })
-  // return
+  axios.get('https://magicdev119.nidigital.uk/wp-json/secret/v1/scraping/', { httpsAgent: agent })
+    .then(response => {
+      console.log(response.data == 'success' ? '123' : 'asd')
+    })
+  return
   const pages = [];//All ad pages.
   let pageNum = 932;
   //pageObject will be formatted as {title,phone,images}, becuase these are the names we chose for the scraping operations below.
