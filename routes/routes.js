@@ -127,7 +127,7 @@ router.get('/getVehicleList', (req, res) => {
 
 var getWPPost = function (req, res) {
   var headers, options;
-
+  console.log('--------------')
   // Set the headers
   headers = {
     'Content-Type': 'application/json'
@@ -143,6 +143,7 @@ var getWPPost = function (req, res) {
   // Start the request
   request(options, function (error, response, body) {
     if (!error && response.statusCode == 200) {
+      console.log('--2------------')
       res.send({
         success: true,
         message: "Successfully fetched a list of post",
@@ -150,6 +151,7 @@ var getWPPost = function (req, res) {
       });
     } else {
       console.log(error);
+      console.log('--1------------')
     }
   });
 };
