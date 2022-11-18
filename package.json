@@ -4,6 +4,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "node-cron": "^3.0.2",
-    "nodejs-web-scraper": "^6.1.0"
+    "nodejs-web-scraper": "^6.1.0",
+    "request": "^2.88.2"
   }
 }

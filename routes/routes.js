@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+var request = require("request");
 
 const router = express.Router()
 const dataPath = './pages/pages.json';
@@ -122,6 +123,39 @@ router.get('/getVehicleList', (req, res) => {
       });
     }
   });
+})
+
+var getWPPost = function (req, res) {
+  var headers, options;
+
+  // Set the headers
+  headers = {
+    'Content-Type': 'application/json'
+  }
+
+  // Configure the request
+  options = {
+    url: 'https://magicdev119.nidigital.uk/wp-json/secret/v1/scraping/',
+    method: 'GET',
+    headers: headers
+  }
+
+  // Start the request
+  request(options, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      res.send({
+        success: true,
+        message: "Successfully fetched a list of post",
+        posts: JSON.parse(body)
+      });
+    } else {
+      console.log(error);
+    }
+  });
+};
+
+router.get('/test', function (req, res) {
+  getWPPost(req, res);
 })
 
 module.exports = router;
