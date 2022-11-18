@@ -1,10 +1,50 @@
 const { Scraper, Root, OpenLinks, CollectContent, DownloadContent } = require('nodejs-web-scraper');
 const fs = require('fs');
+const axios = require('axios');
+const https = require('https');
 
-module.exports = async () => {
+const agent = new https.Agent({
+  rejectUnauthorized: false
+});
 
+function asyncFunction(item, cb) {
+  fs.writeFile('./pages/status.json', JSON.stringify({
+    status: 'saving',
+    current: item
+  }), () => {
+    axios.get('https://magicdev119.nidigital.uk/wp-json/secret/v1/scraping/', { httpsAgent: agent })
+      .then(response => {
+        if (response.data == 'success') {
+        }
+        cb();
+      })
+  });
+}
+
+const saveToDatabase = (start, total) => {
+  let requests = Array.from(Array(parseInt(total / 10) + (total % 10 !== 0 ? 1 : 0)).keys()).reduce((promiseChain, item) => {
+    return promiseChain.then(() => new Promise((resolve) => {
+      asyncFunction(item, resolve);
+    }));
+  }, Promise.resolve());
+
+  requests.then(() => {
+    fs.writeFile('./pages/status.json', JSON.stringify({
+      status: 'ready'
+    }), () => {
+      console.log('done')
+    });
+  })
+}
+
+const scrapingFunc = async () => {
+  // axios.get('https://localhost/wp-json/secret/v1/scraping/', { httpsAgent: agent })
+  //   .then(response => {
+  //     console.log(response.data == 'success' ? '123' : 'asd')
+  //   })
+  // return
   const pages = [];//All ad pages.
-  let pageNum = 931;
+  let pageNum = 1;
   //pageObject will be formatted as {title,phone,images}, becuase these are the names we chose for the scraping operations below.
   //Note that each key is an array, because there might be multiple elements fitting the querySelector.
   //This hook is called after every page finished scraping.
@@ -67,5 +107,14 @@ module.exports = async () => {
     const carIdMatch = each.carId[0].match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-')
     each.carId = carIdMatch[carIdMatch.length - 1]
   })
-  fs.writeFile('./pages/pages.json', JSON.stringify(pages), () => { });
+  fs.writeFile('./pages/pages.json', JSON.stringify(pages), () => {
+    fs.writeFile('./pages/status.json', JSON.stringify({
+      status: 'saving',
+      current: 1
+    }), () => {
+      saveToDatabase(1, pages.length)
+    });
+  });
 }
+
+module.exports = scrapingFunc
