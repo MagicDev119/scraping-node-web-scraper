@@ -12,21 +12,21 @@ app.use('/api', routes)
 
 cron.schedule('00 00 12 * * 0-6', () => {
   const dataPath = './pages/status.json';
-  fs.readFile(dataPath, 'utf8', (err, data) => {
-    const statusResult = JSON.parse(data);
-    if (statusResult.status == 'ready') {
-      fs.writeFile('./pages/status.json', JSON.stringify({
-        status: 'working'
-      }), () => { });
+  // fs.readFile(dataPath, 'utf8', (err, data) => {
+  // const statusResult = JSON.parse(data);
+  // if (statusResult.status == 'ready') {
+  // fs.writeFile('./pages/status.json', JSON.stringify({
+  // status: 'working'
+  // }), () => { });
 
-      scraping()
-    }
-  })
+  scraping()
+  // }
+  // })
 });
 
-fs.writeFile('./pages/status.json', JSON.stringify({
-  status: 'working'
-}), () => { });
+// fs.writeFile('./pages/status.json', JSON.stringify({
+//   status: 'working'
+// }), () => { });
 scraping()
 
 app.listen(3000, () => {
