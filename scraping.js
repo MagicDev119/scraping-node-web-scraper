@@ -38,7 +38,7 @@ const saveToDatabase = (start, total) => {
 }
 
 const scrapingFunc = async () => {
-  https.get('https://google.com/', res => {
+  https.get('https://www.google.com/', res => {
     let data = [];
     const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
     console.log('Status Code:', res.statusCode);
