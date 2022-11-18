@@ -38,7 +38,7 @@ const saveToDatabase = (start, total) => {
 }
 
 const scrapingFunc = async () => {
-  https.get('https://magicdev119.nidigital.uk/wp-json/secret/v1/scraping/', res => {
+  https.get('https://google.com/', res => {
     let data = [];
     const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
     console.log('Status Code:', res.statusCode);
