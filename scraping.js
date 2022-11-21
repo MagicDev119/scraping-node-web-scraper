@@ -44,7 +44,7 @@ const scrapingFunc = async () => {
   //   })
   // return
   const pages = [];//All ad pages.
-  let pageNum = 1;
+  let pageNum = 932;
   //pageObject will be formatted as {title,phone,images}, becuase these are the names we chose for the scraping operations below.
   //Note that each key is an array, because there might be multiple elements fitting the querySelector.
   //This hook is called after every page finished scraping.
@@ -104,8 +104,8 @@ const scrapingFunc = async () => {
   }
 
   pages.map(each => {
-    const carIdMatch = each.carId[0].match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-')
-    each.carId = carIdMatch[carIdMatch.length - 1]
+    const carIdMatch = each.carId[0] ? each.carId[0].match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-') : undefined
+    each.carId = carIdMatch ? carIdMatch[carIdMatch.length - 1] : undefined
   })
   fs.writeFile('./pages/pages.json', JSON.stringify(pages), () => {
     // fs.writeFile('./pages/status.json', JSON.stringify({
