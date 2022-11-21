@@ -7,7 +7,11 @@ const dataPath = './pages/pages.json';
 const statusPath = './pages/status.json';
 router.get('/getVehicleList', (req, res) => {
   fs.readFile(statusPath, 'utf8', (err, status) => {
-    const statusObject = JSON.parse(status)
+    // const statusObject = JSON.parse(status)
+    const statusObject = {
+      status: 'working'
+    }
+
     if (statusObject.status == 'saving') {
       fs.readFile(dataPath, 'utf8', (err, data) => {
         if (err) {
