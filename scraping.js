@@ -44,7 +44,7 @@ const scrapingFunc = async () => {
   //   })
   // return
   const pages = [];//All ad pages.
-  let pageNum = 932;
+  let pageNum = 924;
   //pageObject will be formatted as {title,phone,images}, becuase these are the names we chose for the scraping operations below.
   //Note that each key is an array, because there might be multiple elements fitting the querySelector.
   //This hook is called after every page finished scraping.
