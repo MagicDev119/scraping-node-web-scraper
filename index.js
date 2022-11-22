@@ -19,15 +19,16 @@ cron.schedule('00 00 12 * * 0-6', () => {
   // status: 'working'
   // }), () => { });
 
-  scraping(1)
+  fs.writeFile('./pages/pages.json', JSON.stringify([]), () => {
+    scraping(1)
+  });
   // }
   // })
 });
 
-// fs.writeFile('./pages/status.json', JSON.stringify({
-//   status: 'working'
-// }), () => { });
-scraping(1)
+fs.writeFile('./pages/pages.json', JSON.stringify([]), () => {
+  scraping(1)
+});
 
 app.listen(3000, () => {
   console.log(`Server Started at ${3000}`)
