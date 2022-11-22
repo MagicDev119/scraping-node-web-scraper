@@ -37,14 +37,14 @@ const saveToDatabase = (start, total) => {
   })
 }
 
-const scrapingFunc = async () => {
+const scrapingFunc = async (pageStartNumber) => {
   // axios.get('https://localhost/wp-json/secret/v1/scraping/', { httpsAgent: agent })
   //   .then(response => {
   //     console.log(response.data == 'success' ? '123' : 'asd')
   //   })
   // return
   const pages = [];//All ad pages.
-  let pageNum = 924;
+  let pageNum = pageStartNumber;
   //pageObject will be formatted as {title,phone,images}, becuase these are the names we chose for the scraping operations below.
   //Note that each key is an array, because there might be multiple elements fitting the querySelector.
   //This hook is called after every page finished scraping.
@@ -72,6 +72,8 @@ const scrapingFunc = async () => {
   }
 
   const scraper = new Scraper(config);
+  let pageCount = 1;
+  let isLastPage = false;
   while (true) {
     const root = new Root({ pagination: { queryString: 'pagepc0', begin: pageNum, end: pageNum } });//Open pages 1-10. You need to supply the querystring that the site uses(more details in the API docs).
     const pageManager = new CollectContent('nav.title-bar ul.pagination li', { name: 'hasNext' })
@@ -99,22 +101,45 @@ const scrapingFunc = async () => {
     const getPageManager = pageManager.getData()
     console.log('==============================', getPageManager)
     pageNum++;
-    if (getPageManager[getPageManager.length - 1] !== 'Next')
+    pageCount++;
+    if (pageCount >= 100) {
       break;
+    }
+    if (getPageManager[getPageManager.length - 1] !== 'Next') {
+      isLastPage = true;
+      break;
+    }
   }
 
   pages.map(each => {
     const carIdMatch = each.carId[0] ? each.carId[0].match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-') : undefined
     each.carId = carIdMatch ? carIdMatch[carIdMatch.length - 1] : undefined
   })
-  fs.writeFile('./pages/pages.json', JSON.stringify(pages), () => {
-    // fs.writeFile('./pages/status.json', JSON.stringify({
-    //   status: 'saving',
-    //   current: 1
-    // }), () => {
-    //   saveToDatabase(1, pages.length)
-    // });
-  });
+
+  fs.readFile('./pages/pages.js', 'utf8', (err, pageList) => {
+    let prevList = [];
+    try {
+      if (err) console.log('aaaaaaa')
+      else if (pageList == '') console.log('bbbbbbbbbbbb')
+      else prevList = JSON.parse(pageList)
+    } catch (e) {
+      prevList = [];
+    }
+    pages = [...pageList, ...pages]
+
+    fs.writeFile('./pages/pages.json', JSON.stringify(pages), () => {
+      if (!isLastPage) {
+        scrapingFunc(pageNum)
+      }
+      // fs.writeFile('./pages/status.json', JSON.stringify({
+      //   status: 'saving',
+      //   current: 1
+      // }), () => {
+      //   saveToDatabase(1, pages.length)
+      // });
+    });
+  })
+
 }
 
 module.exports = scrapingFunc
