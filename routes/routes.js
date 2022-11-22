@@ -72,8 +72,10 @@ router.get('/getVehicleList', (req, res) => {
     } else {
       fs.readFile(dataPath, 'utf8', (err, data) => {
         if (err) {
-          throw err;
+          res.send([])
+          return;
         }
+        console.log('-----------------')
         const dataList = JSON.parse(data).map(each => {
           let post_meta = [{
             label: "Gallery",
