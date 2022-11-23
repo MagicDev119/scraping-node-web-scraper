@@ -21,9 +21,9 @@ cron.schedule('00 00 12 * * 0-6', () => {
 
   fs.readFile('./pages/current.json', 'utf8', (err, curPage) => {
     if (err || curPage == '') {
-      fs.writeFile('./pages/pages.json', JSON.stringify([]), () => {
-        scraping(1)
-      });
+      // fs.writeFile('./pages/pages-1.json', JSON.stringify([]), () => {
+      scraping(1)
+      // });
     }
     else {
       scraping(parseInt(curPage))
@@ -35,7 +35,7 @@ cron.schedule('00 00 12 * * 0-6', () => {
 
 fs.readFile('./pages/current.json', 'utf8', (err, curPage) => {
   if (err || curPage == '') {
-    fs.writeFile('./pages/pages.json', JSON.stringify([]), () => {
+    fs.writeFile('./pages/pages-1.json', JSON.stringify([]), () => {
       scraping(1)
     });
   }

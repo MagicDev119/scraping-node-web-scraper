@@ -103,7 +103,7 @@ const scrapingFunc = async (pageStartNumber) => {
     console.log('==============================', getPageManager)
     pageNum++;
     pageCount++;
-    if (pageCount >= 2) {
+    if (pageCount >= 1) {
       break;
     }
     if (getPageManager[getPageManager.length - 1] !== 'Next') {
@@ -117,31 +117,32 @@ const scrapingFunc = async (pageStartNumber) => {
     each.carId = carIdMatch ? carIdMatch[carIdMatch.length - 1] : undefined
   })
 
-  fs.readFile('./pages/pages.json', 'utf8', (err, pageList) => {
-    let prevList = [];
-    try {
-      if (err) console.log('aaaaaaa')
-      else if (pageList == '') console.log('bbbbbbbbbbbb')
-      else prevList = JSON.parse(pageList)
-    } catch (e) {
-      prevList = [];
-    }
-    const curPages = [...prevList, ...pages]
-    fs.writeFile('./pages/current.json', pageNum + '', () => {
-      fs.writeFile('./pages/pages.json', JSON.stringify(curPages), () => {
-        if (!isLastPage) {
+  // fs.readFile('./pages/pages-' + pageNum + '.json', 'utf8', (err, pageList) => {
+  //   let prevList = [];
+  //   try {
+  //     if (err) console.log('aaaaaaa')
+  //     else if (pageList == '') console.log('bbbbbbbbbbbb')
+  //     else prevList = JSON.parse(pageList)
+  //   } catch (e) {
+  //     prevList = [];
+  //   }
+  //   const curPages = [...prevList, ...pages]
+  fs.writeFile('./pages/current.json', pageNum + '', () => {
+    fs.writeFile('./pages/pages-' + pageNum + '.json', JSON.stringify(pages), () => {
+      if (!isLastPage) {
+        fs.writeFile('./pages/total.json', pageNum + '', () => {
           scrapingFunc(pageNum)
-        }
-        // fs.writeFile('./pages/status.json', JSON.stringify({
-        //   status: 'saving',
-        //   current: 1
-        // }), () => {
-        //   saveToDatabase(1, pages.length)
-        // });
-      });
-    })
+        })
+      }
+      // fs.writeFile('./pages/status.json', JSON.stringify({
+      //   status: 'saving',
+      //   current: 1
+      // }), () => {
+      //   saveToDatabase(1, pages.length)
+      // });
+    });
   })
-
+  // })
 }
 
 module.exports = scrapingFunc

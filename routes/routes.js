@@ -3,11 +3,19 @@ const fs = require('fs');
 var request = require("request");
 
 const router = express.Router()
-const dataPath = './pages/pages.json';
 const statusPath = './pages/status.json';
-router.get('/getVehicleList', (req, res) => {
-  fs.readFile(statusPath, 'utf8', (err, status) => {
+router.get('/getVehicleList/:pageNum', (req, res) => {
+  const pageNum = req.params['pageNum']
+  const dataPath = './pages/pages-' + pageNum + '.json';
+  fs.readFile('./pages/total.json', 'utf8', (err, total) => {
     // const statusObject = JSON.parse(status)
+    const totalPage = 1
+    if (err || total == '') {
+    }
+    else {
+      totalPage = total
+    }
+
     const statusObject = {
       status: 'working'
     }
@@ -67,12 +75,18 @@ router.get('/getVehicleList', (req, res) => {
           }
         })
 
-        res.send(dataList);
+        res.send({
+          total: totalPage,
+          list: dataList
+        });
       });
     } else {
       fs.readFile(dataPath, 'utf8', (err, data) => {
         if (err) {
-          res.send([])
+          res.send({
+            total: totalPage,
+            list: []
+          })
           return;
         }
         console.log('-----------------')
@@ -125,7 +139,10 @@ router.get('/getVehicleList', (req, res) => {
           }
         })
 
-        res.send(dataList);
+        res.send({
+          total: totalPage,
+          list: dataList
+        });
       });
     }
   });
