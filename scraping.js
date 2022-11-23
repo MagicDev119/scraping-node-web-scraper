@@ -117,7 +117,7 @@ const scrapingFunc = async (pageStartNumber) => {
     each.carId = carIdMatch ? carIdMatch[carIdMatch.length - 1] : undefined
   })
 
-  fs.readFile('./pages/pages.js', 'utf8', (err, pageList) => {
+  fs.readFile('./pages/pages.json', 'utf8', (err, pageList) => {
     let prevList = [];
     try {
       if (err) console.log('aaaaaaa')
