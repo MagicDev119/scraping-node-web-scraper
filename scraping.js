@@ -133,6 +133,11 @@ const scrapingFunc = async (pageStartNumber) => {
         fs.writeFile('./pages/total.json', pageNum + '', () => {
           scrapingFunc(pageNum)
         })
+      } else {
+        fs.writeFile('./pages/current.json', '1', () => {
+          fs.writeFile('./pages/total.json', pageNum + '', () => {
+          })
+        })
       }
       // fs.writeFile('./pages/status.json', JSON.stringify({
       //   status: 'saving',

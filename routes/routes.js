@@ -9,7 +9,7 @@ router.get('/getVehicleList/:pageNum', (req, res) => {
   const dataPath = './pages/pages-' + pageNum + '.json';
   fs.readFile('./pages/total.json', 'utf8', (err, total) => {
     // const statusObject = JSON.parse(status)
-    const totalPage = 1
+    let totalPage = 1
     if (err || total == '') {
     }
     else {
