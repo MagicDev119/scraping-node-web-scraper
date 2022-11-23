@@ -127,7 +127,7 @@ const scrapingFunc = async (pageStartNumber) => {
       prevList = [];
     }
     const curPages = [...prevList, ...pages]
-    fs.writeFile('./pages/current.json', pageNum, () => {
+    fs.writeFile('./pages/current.json', pageNum + '', () => {
       fs.writeFile('./pages/pages.json', JSON.stringify(curPages), () => {
         if (!isLastPage) {
           scrapingFunc(pageNum)

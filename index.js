@@ -26,7 +26,7 @@ cron.schedule('00 00 12 * * 0-6', () => {
       });
     }
     else {
-      scraping(curPage)
+      scraping(parseInt(curPage))
     }
   })
   // }
@@ -40,7 +40,7 @@ fs.readFile('./pages/current.json', 'utf8', (err, curPage) => {
     });
   }
   else {
-    scraping(curPage)
+    scraping(parseInt(curPage))
   }
 })
 
