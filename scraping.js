@@ -103,7 +103,7 @@ const scrapingFunc = async (pageStartNumber) => {
     console.log('==============================', getPageManager)
     pageNum++;
     pageCount++;
-    if (pageCount >= 100) {
+    if (pageCount >= 10) {
       break;
     }
     if (getPageManager[getPageManager.length - 1] !== 'Next') {
