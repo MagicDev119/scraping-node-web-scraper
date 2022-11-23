@@ -19,16 +19,30 @@ cron.schedule('00 00 12 * * 0-6', () => {
   // status: 'working'
   // }), () => { });
 
-  fs.writeFile('./pages/pages.json', JSON.stringify([]), () => {
-    scraping(1)
-  });
+  fs.readFile('./pages/current.json', 'utf8', (err, curPage) => {
+    if (err || curPage == '') {
+      fs.writeFile('./pages/pages.json', JSON.stringify([]), () => {
+        scraping(1)
+      });
+    }
+    else {
+      scraping(curPage)
+    }
+  })
   // }
   // })
 });
 
-fs.writeFile('./pages/pages.json', JSON.stringify([]), () => {
-  scraping(1)
-});
+fs.readFile('./pages/current.json', 'utf8', (err, curPage) => {
+  if (err || curPage == '') {
+    fs.writeFile('./pages/pages.json', JSON.stringify([]), () => {
+      scraping(1)
+    });
+  }
+  else {
+    scraping(curPage)
+  }
+})
 
 app.listen(3000, () => {
   console.log(`Server Started at ${3000}`)

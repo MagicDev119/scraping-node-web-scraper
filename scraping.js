@@ -68,6 +68,7 @@ const scrapingFunc = async (pageStartNumber) => {
     startUrl: `https://www.usedcarsni.com/search_results.php?make=0&keywords=&fuel_type=0&trans_type=0&age_from=0&age_to=0&price_from=0&price_to=0&user_type=0&mileage_to=0&body_style=0&distance_enabled=0&distance_postcode=&homepage_search_attr=1&tab_id=0&search_type=1`,
     filePath: './images/',
     maxRetries: 1,
+    cloneFiles: false,
     logPath: './logs/'
   }
 
@@ -126,18 +127,19 @@ const scrapingFunc = async (pageStartNumber) => {
       prevList = [];
     }
     pages = [...pageList, ...pages]
-
-    fs.writeFile('./pages/pages.json', JSON.stringify(pages), () => {
-      if (!isLastPage) {
-        scrapingFunc(pageNum)
-      }
-      // fs.writeFile('./pages/status.json', JSON.stringify({
-      //   status: 'saving',
-      //   current: 1
-      // }), () => {
-      //   saveToDatabase(1, pages.length)
-      // });
-    });
+    fs.writeFile('./pages/current.json', pageNum, () => {
+      fs.writeFile('./pages/pages.json', JSON.stringify(pages), () => {
+        if (!isLastPage) {
+          scrapingFunc(pageNum)
+        }
+        // fs.writeFile('./pages/status.json', JSON.stringify({
+        //   status: 'saving',
+        //   current: 1
+        // }), () => {
+        //   saveToDatabase(1, pages.length)
+        // });
+      });
+    })
   })
 
 }
