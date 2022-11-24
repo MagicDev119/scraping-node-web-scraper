@@ -152,7 +152,7 @@ const scrapingFunc = async (pageStartNumber) => {
 
   await Promise.all(
     pages.map(async (eachPage, index) => {
-      const carIdMatch = eachPage.carId[0] ? each.carId[0].match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-') : undefined
+      const carIdMatch = eachPage.carId[0] ? eachPage.carId[0].match(/<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i)[2].split('-') : undefined
       const carId = carIdMatch ? carIdMatch[carIdMatch.length - 1] : undefined
 
       let post_meta = [{
