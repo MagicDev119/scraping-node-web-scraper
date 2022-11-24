@@ -110,7 +110,7 @@ const scrapingFunc = async (pageStartNumber) => {
     const title = new CollectContent('.car-detail-header div h1 a', { name: 'title' })
     const carId = new CollectContent('.car-detail-header div h1', { contentType: 'html', name: 'carId' })
     const contactInfo = new CollectContent('.car-detail-info .technical-params .technical-info address .dealer_phone', { name: 'contactInfo' })
-    const curHtml = new CollectContent('html', { contentType: 'text', name: 'curHtml' })
+    const makeList = new CollectContent('#make option', { name: 'makeList' })
     const images = new DownloadContent('#carousel-slides .carousel-inner .item picture', { name: 'images', alternativeSrc: ['data-url'], filePath: './images/' + pageNum + '/' })
     root.addOperation(pageManager)
     root.addOperation(jobAds)
@@ -120,7 +120,7 @@ const scrapingFunc = async (pageStartNumber) => {
     jobAds.addOperation(technicalInfo)
     jobAds.addOperation(carPriceTitle)
     jobAds.addOperation(contactInfo)
-    jobAds.addOperation(curHtml)
+    jobAds.addOperation(makeList)
     jobAds.addOperation(carPrice)
     jobAds.addOperation(images)
 
@@ -198,30 +198,50 @@ const scrapingFunc = async (pageStartNumber) => {
         }
       })
 
-      let pageHtml = eachPage.curHtml[0].substr(eachPage.curHtml[0].indexOf("adHandler.service.setTargeting('Model'") + "adHandler.service.setTargeting('Model'".length)
-      pageHtml = pageHtml.substr(0, pageHtml.indexOf("')"))
-      const model = pageHtml.substr(pageHtml.indexOf("'") + 1)
-      post_meta.push({
-        label: 'Model',
-        value: eachPage.curHtml
+      eachPage.makeList.map(eachMakeList => {
+        if (eachMakeList.indexOf('(') != -1) {
+          const makeVal = eachMakeList.substr(0, eachMakeList.indexOf('(') - 1)
+          if (eachPage.title[0].indexOf(makeVal) != -1) {
+            post_meta.push({
+              label: 'Make',
+              value: makeVal
+            })
+
+            let tempTitle = eachPage.title[0].substr(eachPage.title[0].indexOf(makeVal) + makeVal.length + 1)
+            tempTitle = tempTitle.substr(0, tempTitle.indexOf('  '))
+            const modelVal = tempTitle.substr(0, tempTitle.lastIndexOf(' '))
+
+            post_meta.push({
+              label: 'Model',
+              value: modelVal
+            })
+          }
+        }
       })
-      if (model != "") {
-        post_meta.push({
-          label: 'Model',
-          value: eachPage.curHtml
-        })
-      }
+      // let pageHtml = eachPage.curHtml[0].substr(eachPage.curHtml[0].indexOf("adHandler.service.setTargeting('Model'") + "adHandler.service.setTargeting('Model'".length)
+      // pageHtml = pageHtml.substr(0, pageHtml.indexOf("')"))
+      // const model = pageHtml.substr(pageHtml.indexOf("'") + 1)
+      // post_meta.push({
+      //   label: 'Model',
+      //   value: eachPage.curHtml
+      // })
+      // if (model != "") {
+      //   post_meta.push({
+      //     label: 'Model',
+      //     value: eachPage.curHtml
+      //   })
+      // }
 
-      pageHtml = eachPage.curHtml[0].substr(eachPage.curHtml[0].indexOf("adHandler.service.setTargeting('Make'") + "adHandler.service.setTargeting('Make'".length)
-      pageHtml = pageHtml.substr(0, pageHtml.indexOf("')"))
-      const make = pageHtml.substr(pageHtml.indexOf("'") + 1)
+      // pageHtml = eachPage.curHtml[0].substr(eachPage.curHtml[0].indexOf("adHandler.service.setTargeting('Make'") + "adHandler.service.setTargeting('Make'".length)
+      // pageHtml = pageHtml.substr(0, pageHtml.indexOf("')"))
+      // const make = pageHtml.substr(pageHtml.indexOf("'") + 1)
 
-      if (make != "") {
-        post_meta.push({
-          label: 'Make',
-          value: make
-        })
-      }
+      // if (make != "") {
+      //   post_meta.push({
+      //     label: 'Make',
+      //     value: make
+      //   })
+      // }
       const newVehicle = await new vehicleModel({
         carId: carId,
         title: eachPage.title[0],
