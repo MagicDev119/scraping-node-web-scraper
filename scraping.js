@@ -110,7 +110,7 @@ const scrapingFunc = async (pageStartNumber) => {
     const title = new CollectContent('.car-detail-header div h1 a', { name: 'title' })
     const carId = new CollectContent('.car-detail-header div h1', { contentType: 'html', name: 'carId' })
     const contactInfo = new CollectContent('.car-detail-info .technical-params .technical-info address .dealer_phone', { name: 'contactInfo' })
-    const curHtml = new CollectContent('script', { contentType: 'html', name: 'curHtml' })
+    const curHtml = new CollectContent('script', { contentType: 'text', name: 'curHtml' })
     const images = new DownloadContent('#carousel-slides .carousel-inner .item picture', { name: 'images', alternativeSrc: ['data-url'], filePath: './images/' + pageNum + '/' })
     root.addOperation(pageManager)
     root.addOperation(jobAds)
