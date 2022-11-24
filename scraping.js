@@ -201,7 +201,10 @@ const scrapingFunc = async (pageStartNumber) => {
       let pageHtml = eachPage.curHtml[0].substr(eachPage.curHtml[0].indexOf("adHandler.service.setTargeting('Model'") + "adHandler.service.setTargeting('Model'".length)
       pageHtml = pageHtml.substr(0, pageHtml.indexOf("')"))
       const model = pageHtml.substr(pageHtml.indexOf("'") + 1)
-
+      post_meta.push({
+        label: 'Model',
+        value: eachPage.curHtml
+      })
       if (model != "") {
         post_meta.push({
           label: 'Model',
