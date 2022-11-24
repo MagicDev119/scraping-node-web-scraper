@@ -198,7 +198,7 @@ const scrapingFunc = async (pageStartNumber) => {
         }
       })
 
-      let pageHtml = eachPage.curHtml[0].substr(eachPage.curHtml.indexOf("adHandler.service.setTargeting('Model'") + "adHandler.service.setTargeting('Model'".length)
+      let pageHtml = eachPage.curHtml[0].substr(eachPage.curHtml[0].indexOf("adHandler.service.setTargeting('Model'") + "adHandler.service.setTargeting('Model'".length)
       pageHtml = pageHtml.substr(0, pageHtml.indexOf("')"))
       const model = pageHtml.substr(pageHtml.indexOf("'") + 1)
 
@@ -209,7 +209,7 @@ const scrapingFunc = async (pageStartNumber) => {
         })
       }
 
-      pageHtml = eachPage.curHtml.substr(eachPage.curHtml.indexOf("adHandler.service.setTargeting('Make'") + "adHandler.service.setTargeting('Make'".length)
+      pageHtml = eachPage.curHtml[0].substr(eachPage.curHtml[0].indexOf("adHandler.service.setTargeting('Make'") + "adHandler.service.setTargeting('Make'".length)
       pageHtml = pageHtml.substr(0, pageHtml.indexOf("')"))
       const make = pageHtml.substr(pageHtml.indexOf("'") + 1)
 
