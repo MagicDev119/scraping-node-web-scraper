@@ -68,7 +68,7 @@ const scrapingFunc = async (pageStartNumber) => {
   const condition = async (cheerioNode) => {
     //Note that cheerioNode contains other useful methods, like html(), hasClass(), parent(), attr() and more.           
     const text = cheerioNode.attr('href')//Get the innerText of the <a> tag.
-    const carIdMatch = text.substr(0, text.indexOf('?') + 1).split('-')
+    const carIdMatch = text.substr(0, text.indexOf('?')).split('-')
     const carId = carIdMatch ? carIdMatch[carIdMatch.length - 1] : undefined
     console.log('-----------------------------------contentElement')
     console.log(carId)
