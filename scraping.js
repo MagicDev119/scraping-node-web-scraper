@@ -205,7 +205,7 @@ const scrapingFunc = async (pageStartNumber) => {
       if (model != "") {
         post_meta.push({
           label: 'Model',
-          value: model
+          value: eachPage.curHtml
         })
       }
 
