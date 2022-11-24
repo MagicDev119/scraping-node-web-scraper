@@ -1,4 +1,5 @@
-require('dotenv').config()
+require("dotenv").config({ path: "./config.env" })
+require('./db/conn')
 const express = require('express')
 const app = express()
 const scraping = require('./scraping')
@@ -19,30 +20,30 @@ cron.schedule('00 00 12 * * 0-6', () => {
   // status: 'working'
   // }), () => { });
 
-  fs.readFile('./pages/current.json', 'utf8', (err, curPage) => {
-    if (err || curPage == '') {
-      // fs.writeFile('./pages/pages-1.json', JSON.stringify([]), () => {
-      scraping(1)
-      // });
-    }
-    else {
-      scraping(parseInt(curPage))
-    }
-  })
+  // fs.readFile('./pages/current.json', 'utf8', (err, curPage) => {
+  //   if (err || curPage == '') {
+  //     // fs.writeFile('./pages/pages-1.json', JSON.stringify([]), () => {
+  scraping()
+  //     // });
+  //   }
+  //   else {
+  //     scraping(parseInt(curPage))
+  //   }
+  // })
   // }
   // })
 });
 
-fs.readFile('./pages/current.json', 'utf8', (err, curPage) => {
-  if (err || curPage == '') {
-    fs.writeFile('./pages/pages-1.json', JSON.stringify([]), () => {
-      scraping(1)
-    });
-  }
-  else {
-    scraping(parseInt(curPage))
-  }
-})
+// fs.readFile('./pages/current.json', 'utf8', (err, curPage) => {
+//   if (err || curPage == '') {
+//     fs.writeFile('./pages/pages-1.json', JSON.stringify([]), () => {
+scraping()
+//     });
+//   }
+//   else {
+//     scraping(parseInt(curPage))
+//   }
+// })
 
 app.listen(3000, () => {
   console.log(`Server Started at ${3000}`)

@@ -2,149 +2,39 @@ const express = require('express');
 const fs = require('fs');
 var request = require("request");
 
+const statusModel = require('../models/statusModel')
+const vehicleModel = require('../models/vehicleModel')
+
 const router = express.Router()
 const statusPath = './pages/status.json';
-router.get('/getVehicleList/:pageNum', (req, res) => {
-  const pageNum = req.params['pageNum']
-  const dataPath = './pages/pages-' + pageNum + '.json';
-  fs.readFile('./pages/total.json', 'utf8', (err, total) => {
-    // const statusObject = JSON.parse(status)
-    let totalPage = 1
-    if (err || total == '') {
-    }
-    else {
-      totalPage = total
-    }
+router.get('/getVehicleList/:type', async (req, res) => {
+  const type = req.params['type']
 
-    const statusObject = {
-      status: 'working'
-    }
+  let statusObject = await statusModel.findOne({ type: 'usedcarsni' })
 
-    if (statusObject.status == 'saving') {
-      fs.readFile(dataPath, 'utf8', (err, data) => {
-        if (err) {
-          throw err;
-        }
-        const limitData = JSON.parse(data).splice(statusObject.current * 10, 10)
-        const dataList = JSON.parse(limitData).map(each => {
-          let post_meta = [{
-            label: "Gallery",
-            value: []
-          }];
-          let flag = false;
-          content = '';
-          console.log(each.carPrice)
-          if (each.carPrice.length >= 1) {
-            post_meta.push({
-              label: 'Price',
-              value: each.carPrice[0]
-            })
-          }
-          each.technicalHeaders.forEach((eachTechParam, index) => {
-            if (eachTechParam === 'Seller') {
-              flag = true
-            }
+  if (statusObject === null) {
+    res.send({
+      list: []
+    })
+  }
+  const curListNum = statusObject.saved_cur_num
+  let vehicleList
 
-            if (!flag) {
-              post_meta.push({
-                label: eachTechParam,
-                value: each.technicalInfo[index]
-              })
-            } else {
-              if (eachTechParam === 'Description') {
-                content = each.technicalInfo[index]
-              }
-              if (eachTechParam === 'Contact') {
-                post_meta.push({
-                  label: eachTechParam,
-                  value: each.technicalInfo[index]
-                })
-              }
-            }
-          })
-          return {
-            post: {
-              post_content: content,
-              post_title: each.title[0],
-              post_status: 'publish',
-              post_type: 'vehica_car',
-              images: each.images,
-              page_num: each.pageNum
-            },
-            post_meta: post_meta
-          }
-        })
+  if (type != 'scraping' && parseInt(type) != NaN) {
+    vehicleList = await vehicleModel.find({
+      deleted: false
+    }).skip(parseInt(type)).limit(10)
+  } else {
+    vehicleList = await vehicleModel.find({
+      deleted: false
+    }).skip(curListNum).limit(10)
 
-        res.send({
-          total: totalPage,
-          list: dataList
-        });
-      });
-    } else {
-      fs.readFile(dataPath, 'utf8', (err, data) => {
-        if (err) {
-          res.send({
-            total: totalPage,
-            list: []
-          })
-          return;
-        }
-        console.log('-----------------')
-        const dataList = JSON.parse(data).map(each => {
-          let post_meta = [{
-            label: "Gallery",
-            value: []
-          }];
-          let flag = false;
-          content = '';
-          console.log(each.carPrice)
-          if (each.carPrice.length >= 1) {
-            post_meta.push({
-              label: 'Price',
-              value: each.carPrice[0]
-            })
-          }
-          each.technicalHeaders.forEach((eachTechParam, index) => {
-            if (eachTechParam === 'Seller') {
-              flag = true
-            }
+    statusObject.saved_cur_num = statusObject.saved_cur_num + 10
+    await statusObject.save()
+  }
 
-            if (!flag) {
-              post_meta.push({
-                label: eachTechParam,
-                value: each.technicalInfo[index]
-              })
-            } else {
-              if (eachTechParam === 'Description') {
-                content = each.technicalInfo[index]
-              }
-              if (eachTechParam === 'Contact') {
-                post_meta.push({
-                  label: eachTechParam,
-                  value: each.technicalInfo[index]
-                })
-              }
-            }
-          })
-          return {
-            post: {
-              post_content: content,
-              post_title: each.title[0],
-              post_status: 'publish',
-              post_type: 'vehica_car',
-              images: each.images,
-              page_num: each.pageNum
-            },
-            post_meta: post_meta
-          }
-        })
-
-        res.send({
-          total: totalPage,
-          list: dataList
-        });
-      });
-    }
+  res.send({
+    list: vehicleList
   });
 })
 
