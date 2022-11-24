@@ -73,4 +73,22 @@ router.get('/test', function (req, res) {
   getWPPost(req, res);
 })
 
+router.get('/init-status', async function (req, res) {
+  await statusModel.findOneAndUpdate(
+    { type: 'usedcarsni' },
+    {
+      $set: {
+        type: 'usedcarsni',
+        scraping_cur_page: 1,
+        scraped_total_page: 1,
+        saved_cur_num: 1
+      }
+    }
+  )
+})
+
+router.get('/init-list', async function (req, res) {
+  await vehicleModel.deleteMany({});
+})
+
 module.exports = router;
