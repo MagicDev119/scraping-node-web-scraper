@@ -46,7 +46,7 @@ router.get('/getVehicleList/:type', async (req, res) => {
           return num + '  ' + eachNumber.split(num)[0]
         })
 
-        eachMeta.value = phoneNumber.join('<br>')
+        eachMeta.value = phoneNumber.join(', ')
       }
 
       return eachMeta
