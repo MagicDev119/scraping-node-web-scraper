@@ -21,13 +21,9 @@ router.get('/getVehicleList/:type', async (req, res) => {
   let vehicleList
 
   if (type != 'scraping' && parseInt(type) != NaN) {
-    vehicleList = await vehicleModel.find({
-      deleted: false
-    }).skip(parseInt(type)).limit(10)
+    vehicleList = await vehicleModel.find().skip(parseInt(type)).limit(10)
   } else {
-    vehicleList = await vehicleModel.find({
-      deleted: false
-    }).skip(curListNum).limit(10)
+    vehicleList = await vehicleModel.find().skip(curListNum).limit(10)
 
     statusObject.saved_cur_num = statusObject.saved_cur_num + 10
     await statusObject.save()
@@ -96,14 +92,24 @@ router.get('/test', function (req, res) {
   getWPPost(req, res)
 })
 
-router.get('/init-status', async function (req, res) {
+router.get('/init-scraping', async function (req, res) {
   await statusModel.findOneAndUpdate(
     { type: 'usedcarsni' },
     {
       $set: {
         type: 'usedcarsni',
         scraping_cur_page: 1,
-        scraped_total_page: 1,
+        scraped_total_page: 1
+      }
+    }
+  )
+})
+
+router.get('/init-saving', async function (req, res) {
+  await statusModel.findOneAndUpdate(
+    { type: 'usedcarsni' },
+    {
+      $set: {
         saved_cur_num: 1
       }
     }
