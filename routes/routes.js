@@ -36,7 +36,7 @@ router.get('/getVehicleList/:type', async (req, res) => {
   const listRes = vehicleList.map(each => {
     const eachPostMeta = each.post_meta.map(eachMeta => {
       if (eachMeta.label == 'Model') {
-        eachMeta.make = each.post_meta.filter(eachFilter => eachFilter.label == 'Make')[0] ? each.post_meta.filter(eachFilter => eachFilter.label == 'Make')[0].label : undefined
+        eachMeta.make = each.post_meta.filter(eachFilter => eachFilter.label == 'Make')[0] ? each.post_meta.filter(eachFilter => eachFilter.label == 'Make')[0].value : undefined
       }
 
       if (eachMeta.label == 'Contact') {
