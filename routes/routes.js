@@ -25,7 +25,11 @@ router.get('/getVehicleList/:type', async (req, res) => {
   } else {
     vehicleList = await vehicleModel.find().skip(curListNum).limit(10)
 
-    statusObject.saved_cur_num = statusObject.saved_cur_num + 10
+    if (vehicleList.length < 10) {
+      statusObject.saved_cur_num = 0
+    } else {
+      statusObject.saved_cur_num = statusObject.saved_cur_num + 10
+    }
     await statusObject.save()
   }
 
