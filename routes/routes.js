@@ -48,6 +48,8 @@ router.get('/getVehicleList/:type', async (req, res) => {
 
         eachMeta.value = phoneNumber.join('<br>')
       }
+
+      return eachMeta
     })
 
     each.post_meta = eachPostMeta
