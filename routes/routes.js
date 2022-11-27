@@ -124,4 +124,8 @@ router.get('/init-list', async function (req, res) {
   await vehicleModel.deleteMany({})
 })
 
+router.get('/set-list-visible', async function (req, res) {
+  await vehicleModel.updateMany({}, { isVisible: true, delete: false })
+})
+
 module.exports = router
