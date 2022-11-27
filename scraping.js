@@ -130,11 +130,11 @@ const scrapingFunc = async (pageStartNumber) => {
     console.log('==============================', getPageManager)
     pageNum++
     pageCount++
-    if (pageCount >= 1) {
-      break
-    }
     if (getPageManager[getPageManager.length - 1] !== 'Next') {
       isLastPage = true
+      break
+    }
+    if (pageCount >= 1) {
       break
     }
   }
