@@ -78,7 +78,7 @@ const scrapingFunc = async (pageStartNumber) => {
     if (vehicleResult === null) {
       return true
     }
-    vehicleResult.deleted = false
+    vehicleResult.isVisible = true
     await vehicleResult.save()
     // if (carId === 'some text i am looking for') {//Even though many links might fit the querySelector, Only those that have this innerText,
     //   // will be "opened".
@@ -165,7 +165,7 @@ const scrapingFunc = async (pageStartNumber) => {
       if (eachPage.carPrice.length >= 1) {
         post_meta.push({
           label: 'Price',
-          value: parseInt(eachPage.carPrice[0].match(/[0-9]/gi).join(''))
+          value: parseInt((eachPage.carPrice[0].match(/[0-9]/gi) || []).join('')) || 'POA'
         })
       }
 
@@ -272,6 +272,7 @@ const scrapingFunc = async (pageStartNumber) => {
 
     scrapingFunc(pageNum)
   } else {
+    await vehicleModel.updateMany({ isVisible: false }, { $set: { deleted: true } })
     await statusModel.findOneAndUpdate(
       { type: 'usedcarsni' },
       {
@@ -308,7 +309,7 @@ const startScraping = async () => {
       saved_cur_num: 1
     }).save()
 
-    await vehicleModel.updateMany({}, { deleted: true })
+    await vehicleModel.updateMany({}, { isVisible: false })
 
     scrapingFunc(1)
   } else {

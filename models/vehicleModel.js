@@ -13,6 +13,10 @@ const VehicleSchema = new mongoose.Schema({
     post: {
         type: Object
     },
+    isVisible: {
+        type: Boolean,
+        default: true
+    },
     deleted: {
         type: Boolean,
         default: false
